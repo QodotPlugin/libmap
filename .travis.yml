@@ -8,7 +8,7 @@ matrix:
     include:
         - os: osx
           osx_image: xcode8
-          before_install: brew install scons
+          before_install: pip install --user scons
           script: "scons platform=osx bits=64 target=release"
 
         - os: linux
