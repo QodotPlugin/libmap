@@ -26,7 +26,7 @@ build_script:
   - scons platform=%LM_PLATFORM% bits=64 target=%TARGET%
 
 artifacts:
-- path: build/libmap.dll
+  - path: build/libmap.dll
 
 deploy:
   - provider: GitHub
