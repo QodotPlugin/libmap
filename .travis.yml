@@ -31,3 +31,4 @@ deploy:
     on:
         repo: Shfty/libmap
     draft: true
+    overwrite: true
