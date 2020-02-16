@@ -2,6 +2,9 @@ language: c
 before_script:
     - mkdir build
     - mkdir install
+before_deploy:
+    - export TRAVIS_TAG=latest
+    - git tag $TRAVIS_TAG
 matrix:
     include:
         - os: osx
@@ -27,4 +30,5 @@ deploy:
         - "build/*.dylib"
     on:
         repo: Shfty/libmap
-        draft: true
+        tags: true
+    draft: true
