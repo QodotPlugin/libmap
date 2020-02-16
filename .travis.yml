@@ -30,5 +30,4 @@ deploy:
         - "build/*.dylib"
     on:
         repo: Shfty/libmap
-        tags: true
     draft: true
