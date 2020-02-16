@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include "platform.h"
 #include "face.h"
 #include "brush.h"
 #include "entity.h"
@@ -249,7 +250,7 @@ void token(const char *buf)
             current_entity.properties = realloc(current_entity.properties, (current_entity.property_count + 1) * sizeof(property));
             property *prop = &current_entity.properties[current_entity.property_count];
             *prop = (property){0};
-            prop->key = _strdup(&buf[1]);
+            prop->key = STRDUP(&buf[1]);
 
             size_t last = strlen(prop->key) - 1;
             if (prop->key[last] == '"')
@@ -309,7 +310,7 @@ void token(const char *buf)
 
         if (is_last)
         {
-            prop->value = _strdup(&current_property[1]);
+            prop->value = STRDUP(&current_property[1]);
             prop->value[strlen(prop->value) - 1] = '\0';
             current_entity.property_count++;
             set_scope(PS_ENTITY);
@@ -570,8 +571,8 @@ void commit_entity()
         property *dest_property = &dest_entity->properties[p];
         *dest_property = (property){0};
 
-        dest_property->key = _strdup(current_entity.properties[p].key);
-        dest_property->value = _strdup(current_entity.properties[p].value);
+        dest_property->key = STRDUP(current_entity.properties[p].key);
+        dest_property->value = STRDUP(current_entity.properties[p].value);
     }
 
     dest_entity->brush_count = current_entity.brush_count;

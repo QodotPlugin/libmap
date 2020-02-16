@@ -1,5 +1,6 @@
 #include "map_data.h"
 
+#include "platform.h"
 #include "brush.h"
 #include "face.h"
 
@@ -120,7 +121,7 @@ int map_data_register_texture(const char *name)
     textures = realloc(textures, (texture_count + 1) * sizeof(texture_data));
     texture_data *texture = &textures[texture_count];
     *texture = (texture_data){0};
-    texture->name = _strdup(name);
+    texture->name = STRDUP(name);
     texture_count++;
     return texture_count - 1;
 }
