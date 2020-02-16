@@ -213,7 +213,7 @@ void set_scope(parse_scope new_scope)
     scope = new_scope;
 }
 
-inline bool strings_match(const char *lhs, const char *rhs)
+bool strings_match(const char *lhs, const char *rhs)
 {
     return strcmp(lhs, rhs) == 0;
 }

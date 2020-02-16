@@ -13,6 +13,8 @@ extern LIBMAP_API bool map_parser_load(const char *map_file);
 void token(const char *buf);
 void newline();
 
+bool strings_match(const char *lhs, const char *rhs);
+
 void commit_face();
 void commit_brush();
 void commit_entity();
