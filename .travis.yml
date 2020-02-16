@@ -6,11 +6,6 @@ before_install:
 
 matrix:
     include:
-        - os: windows
-          script: "scons platform=windows bits=64 target=release"
-          before_install:
-              - pip install scons
-
         - os: osx
           osx_image: xcode8
           script: "scons platform=osx bits=64 target=release"
