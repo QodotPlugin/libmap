@@ -10,7 +10,6 @@ opts.Add(EnumVariable('target', "Compilation target", 'debug', ['d', 'debug', 'r
 opts.Add(EnumVariable('platform', "Compilation platform", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(EnumVariable('p', "Compilation target, alias for 'platform'", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(BoolVariable('use_llvm', "Use the LLVM / Clang compiler", 'no'))
-opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'install/'))
 opts.Add(PathVariable('target_name', 'The library name.', 'libqodot', PathVariable.PathAccept))
 
 # only support 64 at this time..
@@ -33,7 +32,6 @@ if env['platform'] == '':
 
 # Check our platform specifics
 if env['platform'] == "osx":
-    env['target_path'] += 'osx/'
     if env['target'] in ('debug', 'd'):
         env.Append(CCFLAGS = ['-g','-O2', '-arch', 'x86_64'])
         env.Append(LINKFLAGS = ['-arch', 'x86_64'])
@@ -42,14 +40,12 @@ if env['platform'] == "osx":
         env.Append(LINKFLAGS = ['-arch', 'x86_64'])
 
 elif env['platform'] in ('x11', 'linux'):
-    env['target_path'] += 'x11/'
     if env['target'] in ('debug', 'd'):
         env.Append(CCFLAGS = ['-fPIC', '-g3','-Og'])
     else:
         env.Append(CCFLAGS = ['-fPIC', '-g','-O3'])
 
 elif env['platform'] == "windows":
-    env['target_path'] += 'win64/'
     # This makes sure to keep the session environment variables on windows,
     # that way you can run scons in a vs 2017 prompt and it will find all the required tools
     env.Append(ENV = os.environ)
