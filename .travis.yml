@@ -1,25 +1,26 @@
 language: c
 
 before_install:
-  - mkdir build
-  - mkdir install
+    - mkdir build
+    - mkdir install
 
 matrix:
     include:
         - os: windows
-          script: 'scons platform=windows bits=64 target=release'
+          script: "scons platform=windows bits=64 target=release"
 
         - os: osx
           osx_image: xcode8
-          script: 'scons platform=osx bits=64 target=release'
-          homebrew:
-              packages:
-              - scons
+          script: "scons platform=osx bits=64 target=release"
+          addons:
+              homebrew:
+                  packages:
+                      - scons
 
         - os: linux
-          script: 'scons platform=linux bits=64 target=release'
+          script: "scons platform=linux bits=64 target=release"
           addons:
-            apt:
-              packages:
-              - scons
-              update: true
+              apt:
+                  packages:
+                      - scons
+                  update: true
