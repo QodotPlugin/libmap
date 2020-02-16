@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-#define LIBMAP_API _declspec(dllexport)
+#define LIBMAP_API __declspec(dllexport)
 
 #endif
