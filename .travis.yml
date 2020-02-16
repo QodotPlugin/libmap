@@ -24,7 +24,7 @@ deploy:
   file_glob: true
   skip_cleanup: true
   api_key:
-    secure: "fff3a642dfab37f6d5055fcd84371582c305ae46"
+    secure: "LHawryfPzDe8Vl593r+Ixq5wc6y7yiDZS8uyVi6/AWV6NOgFvs17nnpHN9hBaK3hG5rjHI/s9OlmAjxC/d9vAbi8YVMOjBOEKjyqjhQtLZT6gq2Ir9UHxwceraDFwOZc4Jn9IVIAxjUl2KoLcZJqSeOvnsar6yxpQQtpC4ZLjQNscF8O48pMy9tsN34P9LwZj4lm85t154AREUtWIWQA/rE6pyrpYalTWQZTh7I3fnwOsb1SGVUHM2UacgWumhGcU1EHwkWQUmkdr69sD1BRF7WCw4CWcmilQWIFfNxRIRm/LDuQR4kh63u+FGze0UMhJVKO1SJNHTZkOxIG+m7aZ4aaNCn/CsUr1QHycoyf/iQ8cPfACWonHYf0lQbzFgOd3ITkvC4ZM/6viqthL2X3WxAGzN7mMDu/kkP64njGD9mvtqJtTHdTqD3fDfyJl2bYbT5zPp72Sqf1ozDQope5HNd2q8YBgyHjmmufx/EaZ+yTJss3oC4hRcZfIEz0iNQB4Txt7+nCOEc9BrfIAVa8Q7qmjD0ShyX1ubWZOKRitCxDaKVJZpimPYIgG5JLDurSuhSUAl2xkSpQKSOhI9jKh9EjEvcXblUUYPO45gIskCc28H/rvR3Lejh++zXBx//5Hc66G4f9A38l8PTmBHGAfiD+LpMALvxoiWyR7l4wCwY="
   file:
     - "build/*.dll"
     - "build/*.so"
