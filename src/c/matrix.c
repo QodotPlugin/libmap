@@ -44,34 +44,34 @@ mat4 rotation_matrix(vec3 axis, double angle)
     double L = u2 + v2 + w2;
 
     return (mat4){
-        {(u2 + (v2 + w2) * cos(angle)) / L, (axis.x * axis.y * (1 - cos(angle)) - axis.z * sqrt(L) * sin(angle)) / L, (axis.x * axis.z * (1 - cos(angle)) + axis.y * sqrt(L) * sin(angle)) / L, 0,
+        {(u2 + (v2 + w2) * cos(angle)) / L, (axis.x * axis.y * (1.0 - cos(angle)) - axis.z * sqrt(L) * sin(angle)) / L, (axis.x * axis.z * (1 - cos(angle)) + axis.y * sqrt(L) * sin(angle)) / L, 0,
          (axis.x * axis.y * (1 - cos(angle)) + axis.z * sqrt(L) * sin(angle)) / L, (v2 + (u2 + w2) * cos(angle)) / L, (axis.y * axis.z * (1 - cos(angle)) - axis.x * sqrt(L) * sin(angle)) / L, 0,
          (axis.x * axis.z * (1 - cos(angle)) - axis.y * sqrt(L) * sin(angle)) / L, (axis.y * axis.z * (1 - cos(angle)) + axis.x * sqrt(L) * sin(angle)) / L, (w2 + (u2 + v2) * cos(angle)) / L, 0,
          0, 0, 0, 1}};
 }
 
-float get_fovy(float fov_x, float aspect)
+double get_fovy(double fov_x, double aspect)
 {
-    return (float)(RAD_TO_DEG(atan(aspect * tan(DEG_TO_RAD(fov_x * 0.5)))) * 2.0);
+    return RAD_TO_DEG(atan(aspect * tan(DEG_TO_RAD(fov_x * 0.5)))) * 2.0;
 }
 
-mat4 projection_matrix(float fovy_degrees, float aspect, float z_near, float z_far, bool flip_fov)
+mat4 projection_matrix(double fovy_degrees, double aspect, double z_near, double z_far, bool flip_fov)
 {
     if (flip_fov)
     {
         fovy_degrees = get_fovy(fovy_degrees, 1.0f / aspect);
     }
 
-    float delta_z = z_far - z_near;
-    float radians = (float)(fovy_degrees / 2.0 * PI / 180.0);
-    float sine = (float)sin(radians);
+    double delta_z = z_far - z_near;
+    double radians = (double)(fovy_degrees / 2.0 * PI / 180.0);
+    double sine = (double)sin(radians);
 
     if (delta_z == 0 || sine == 0 || aspect == 0)
     {
         return mat4_identity();
     }
 
-    float cotangent = (float)(cos(radians) / sine);
+    double cotangent = (double)(cos(radians) / sine);
 
     return (mat4){
         {cotangent / aspect, 0, 0, 0,
