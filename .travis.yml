@@ -24,7 +24,7 @@ deploy:
   file_glob: true
   skip_cleanup: true
   api_key:
-    secure: "52869b9a272748dfa08951ceb852563e88a96d08"
+    secure: "fff3a642dfab37f6d5055fcd84371582c305ae46"
   file:
     - "build/*.dll"
     - "build/*.so"
