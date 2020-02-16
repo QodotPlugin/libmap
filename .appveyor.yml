@@ -36,3 +36,4 @@ deploy:
     repository: Shfty/libmap
     artifact: build/libmap.dll
     draft: true
+    force_update: true
