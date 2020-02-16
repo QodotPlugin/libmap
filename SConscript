@@ -1,4 +1,8 @@
+#!python
+import os, subprocess
+
 Import('env')
+env = env.Clone()
 
 env.Append(CPPPATH=['./src/h'])
 
