@@ -13,7 +13,6 @@ matrix:
               homebrew:
                   packages:
                       - scons
-                  update: true
 
         - os: linux
           script: "scons platform=linux bits=64 target=release"
