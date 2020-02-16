@@ -37,3 +37,4 @@ deploy:
     artifact: build/libmap.dll
     draft: true
     force_update: true
+    tag: latest
