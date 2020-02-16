@@ -20,11 +20,8 @@ install:
   - if defined VS call "%VS%" %ARCH% # if defined - so we can also use mingw
 
 before_build:
-  - echo %PLATFORM%
-  - python --version
-  - scons --version
   - mkdir build
   - mkdir install
 
 build_script:
-  - scons platform=%LM_PLATFORM% target=%TARGET% tools=%TOOLS% progress=no
+  - scons platform=%LM_PLATFORM% bits=64 target=%TARGET%
