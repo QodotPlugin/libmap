@@ -23,6 +23,8 @@ before_build:
   - echo %PLATFORM%
   - python --version
   - scons --version
+  - mkdir build
+  - mkdir install
 
 build_script:
   - scons platform=%LM_PLATFORM% target=%TARGET% tools=%TOOLS% progress=no
