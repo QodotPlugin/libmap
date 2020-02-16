@@ -3,8 +3,11 @@ language: c
 matrix:
     include:
         - os: windows
-
-        - os: linux
+          script: 'scons platform=windows bits=64 target=release'
 
         - os: osx
           osx_image: xcode8
+          script: 'scons platform=osx bits=64 target=release'
+
+        - os: linux
+          script: 'scons platform=linux bits=64 target=release'
