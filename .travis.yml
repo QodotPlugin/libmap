@@ -18,3 +18,17 @@ matrix:
                   packages:
                       - scons
                   update: true
+
+deploy:
+  provider: releases
+  file_glob: true
+  skip_cleanup: true
+  api_key:
+    secure: "52869b9a272748dfa08951ceb852563e88a96d08"
+  file:
+    - "build/*.dll"
+    - "build/*.so"
+    - "build/*.dylib"
+  on:
+    repo: Shfty/libmap
+    tags: true
