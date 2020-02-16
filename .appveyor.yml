@@ -25,3 +25,11 @@ before_build:
 
 build_script:
   - scons platform=%LM_PLATFORM% bits=64 target=%TARGET%
+
+deploy:
+  - provider: GitHub
+    auth_token:
+      secure: YCKQJa/VO6nHDC8/iCOtJbqQ0nri+/S6zhEHnYzUAj43tmZwxnWQ6NjDB78FZY0v
+    repository: Shfty/libmap
+    artifact: build/libmap.dll
+    draft: true
