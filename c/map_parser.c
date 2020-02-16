@@ -220,6 +220,8 @@ inline bool strings_match(const char *lhs, const char *rhs)
 
 void token(const char *buf)
 {
+    property *prop = NULL;
+
     if (comment)
     {
         return;
@@ -248,7 +250,7 @@ void token(const char *buf)
         if (buf[0] == '"')
         {
             current_entity.properties = realloc(current_entity.properties, (current_entity.property_count + 1) * sizeof(property));
-            property *prop = &current_entity.properties[current_entity.property_count];
+            prop = &current_entity.properties[current_entity.property_count];
             *prop = (property){0};
             prop->key = STRDUP(&buf[1]);
 
@@ -272,7 +274,7 @@ void token(const char *buf)
         }
         break;
     case PS_PROPERTY_VALUE:
-        property *prop = &current_entity.properties[current_entity.property_count];
+        prop = &current_entity.properties[current_entity.property_count];
 
         size_t buf_length = strlen(buf);
 
