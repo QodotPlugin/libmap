@@ -8,6 +8,8 @@ matrix:
     include:
         - os: windows
           script: "scons platform=windows bits=64 target=release"
+          before_install:
+              - choco upgrade --no-progress -y scons
 
         - os: osx
           osx_image: xcode8
@@ -16,6 +18,7 @@ matrix:
               homebrew:
                   packages:
                       - scons
+                  update: true
 
         - os: linux
           script: "scons platform=linux bits=64 target=release"
