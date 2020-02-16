@@ -1,30 +1,30 @@
 language: c
 before_script:
-- mkdir build
-- mkdir install
+    - mkdir build
+    - mkdir install
 matrix:
-  include:
-  - os: osx
-    osx_image: xcode8
-    before_install: easy_install scons
-    script: scons platform=osx bits=64 target=release
-  - os: linux
-    script: scons platform=linux bits=64 target=release
-    addons:
-      apt:
-        packages:
-        - scons
-        update: true
+    include:
+        - os: osx
+          osx_image: xcode8
+          before_install: easy_install scons
+          script: scons platform=osx bits=64 target=release
+        - os: linux
+          script: scons platform=linux bits=64 target=release
+          addons:
+              apt:
+                  packages:
+                      - scons
+                  update: true
 deploy:
-  provider: releases
-  file_glob: true
-  skip_cleanup: true
-  api_key:
-    secure: fhi3XsOLN5+SmLv/UB+uKb1WzryIiO91olaDXAC5cLqMZmvHo3LDlHaBtSkpl98zXI3n3iOm8toWXHhOJJhYo1QRqiFdaXa8mvDeyBn8QXGj+58EImzp3lwV3EX4W9K8Tx3u/sNubIlSofkBp2WEw68Vj3AZsrSPgi8R9raWKCB2kWBEuhdz1qMYopoE9OGlxsc2hnr7yPZm5OkUfJJ+52p+56oHgg/SduYjNw7QQ4W/6dz5AS4BG8+Ih+Am2C1JLx4bhoAsLrND3NYNA/ozEovwFNWREjhOhzsAOgXU1xz+sgDDlhfToINx+F0eoPH53qKzOK3n8i3FAYa5S39RzVGtIb8LIP+ZskGzZSq2brEBEn6V5YZoekLLeKEc2LZxrwTLeg9ss1UcdG2kTRdIMD2WF+yH0rDUZwsYmRDyOXoss+iafFEx+WhQjDBnf2TtHOGPqxr+PNlF3Dwuin+U/GBYQsEoooD4gAz5m6asaPc4k2LJ2DRELrs68uraJz0rOV58/tO9s2X6t1iFbctjsmGK1VAJixocNmJ+A3xVt0di5o9vSGTk7vFNc5/vFPg3fY90RPcbmf68vwev/ln6amPrdyVx4qYeBhSMRnfaVidyO/MI0GUobl8sI9zdGBKS/pXRy5Y92P3A/1lVuzf5aK5VthmvkG7I2cXxndAamS0=
-  file:
-    - "build/*.dll"
-    - "build/*.so"
-    - "build/*.dylib"
-  on:
-    repo: Shfty/libmap
-    draft: true
+    provider: releases
+    file_glob: true
+    skip_cleanup: true
+    api_key:
+        secure: fhi3XsOLN5+SmLv/UB+uKb1WzryIiO91olaDXAC5cLqMZmvHo3LDlHaBtSkpl98zXI3n3iOm8toWXHhOJJhYo1QRqiFdaXa8mvDeyBn8QXGj+58EImzp3lwV3EX4W9K8Tx3u/sNubIlSofkBp2WEw68Vj3AZsrSPgi8R9raWKCB2kWBEuhdz1qMYopoE9OGlxsc2hnr7yPZm5OkUfJJ+52p+56oHgg/SduYjNw7QQ4W/6dz5AS4BG8+Ih+Am2C1JLx4bhoAsLrND3NYNA/ozEovwFNWREjhOhzsAOgXU1xz+sgDDlhfToINx+F0eoPH53qKzOK3n8i3FAYa5S39RzVGtIb8LIP+ZskGzZSq2brEBEn6V5YZoekLLeKEc2LZxrwTLeg9ss1UcdG2kTRdIMD2WF+yH0rDUZwsYmRDyOXoss+iafFEx+WhQjDBnf2TtHOGPqxr+PNlF3Dwuin+U/GBYQsEoooD4gAz5m6asaPc4k2LJ2DRELrs68uraJz0rOV58/tO9s2X6t1iFbctjsmGK1VAJixocNmJ+A3xVt0di5o9vSGTk7vFNc5/vFPg3fY90RPcbmf68vwev/ln6amPrdyVx4qYeBhSMRnfaVidyO/MI0GUobl8sI9zdGBKS/pXRy5Y92P3A/1lVuzf5aK5VthmvkG7I2cXxndAamS0=
+    file:
+        - "build/*.dll"
+        - "build/*.so"
+        - "build/*.dylib"
+    on:
+        repo: Shfty/libmap
+        draft: true
