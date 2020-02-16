@@ -10,7 +10,7 @@ opts.Add(EnumVariable('target', "Compilation target", 'debug', ['d', 'debug', 'r
 opts.Add(EnumVariable('platform', "Compilation platform", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(EnumVariable('p', "Compilation target, alias for 'platform'", '', ['', 'windows', 'x11', 'linux', 'osx']))
 opts.Add(BoolVariable('use_llvm', "Use the LLVM / Clang compiler", 'no'))
-opts.Add(PathVariable('target_path', 'The path where the lib is installed.', '../godot-project/addons/qodot/bin/'))
+opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'install/'))
 opts.Add(PathVariable('target_name', 'The library name.', 'libqodot', PathVariable.PathAccept))
 
 # only support 64 at this time..
