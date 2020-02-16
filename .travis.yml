@@ -1,5 +1,8 @@
 language: c
 
+before_install:
+  - sudo apt-get -y install scons
+
 matrix:
     include:
         - os: windows
@@ -8,6 +11,14 @@ matrix:
         - os: osx
           osx_image: xcode8
           script: 'scons platform=osx bits=64 target=release'
+          homebrew:
+              packages:
+              - scons
 
         - os: linux
           script: 'scons platform=linux bits=64 target=release'
+          addons:
+            apt:
+              packages:
+              - scons
+              update: true
