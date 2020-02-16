@@ -1,6 +1,6 @@
 #include "surface_gatherer.h"
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
