@@ -62,6 +62,3 @@ elif env['platform'] == "windows":
 
 # Headers
 env.SConscript("SConscript", exports='env')
-
-env.Install(dir = env['target_path'], source = "build/libmap.dll")
-env.Install(dir = env['target_path'], source = "build/libmap.pdb")
