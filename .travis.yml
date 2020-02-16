@@ -9,7 +9,7 @@ matrix:
         - os: windows
           script: "scons platform=windows bits=64 target=release"
           before_install:
-              - choco upgrade --no-progress -y scons
+              - pip install scons
 
         - os: osx
           osx_image: xcode8
