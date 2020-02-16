@@ -8,7 +8,7 @@ environment:
     - VS: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PLATFORM: windows
       TOOLS: yes
-      TARGET: release_debug
+      TARGET: release
       ARCH: amd64
 
 cache:
@@ -23,7 +23,6 @@ before_build:
   - echo %PLATFORM%
   - python --version
   - scons --version
-  - cl.exe
 
 build_script:
   - scons platform=%PLATFORM% target=%TARGET% tools=%TOOLS% progress=no
