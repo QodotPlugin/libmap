@@ -6,7 +6,7 @@
 #include "vector.h"
 #include "brush.h"
 
-LIBMAP_API void geo_generator_run();
+extern LIBMAP_API void geo_generator_run();
 
 void generate_brush_vertices(int entity_idx, int brush_idx);
 bool intersect_faces(face f0, face f1, face f2, vec3 *o_vertex);
@@ -18,10 +18,10 @@ vertex_uv get_valve_uv(vec3 vertex, const face* face, int texture_width, int tex
 vertex_tangent get_standard_tangent(const face* face);
 vertex_tangent get_valve_tangent(const face* face);
 
-LIBMAP_API void geo_generator_print_entities();
-LIBMAP_API const entity_geometry* geo_generator_get_entities();
-LIBMAP_API int geo_generator_get_brush_vertex_count(int entity_idx, int brush_idx);
-LIBMAP_API int geo_generator_get_brush_index_count(int entity_idx, int brush_idx);
-LIBMAP_API void geo_generator_get_brush_vertices(int entity_idx, int brush_idx, face_vertex *o_vertices, int *o_indices);
+extern LIBMAP_API void geo_generator_print_entities();
+extern LIBMAP_API const entity_geometry* geo_generator_get_entities();
+extern LIBMAP_API int geo_generator_get_brush_vertex_count(int entity_idx, int brush_idx);
+extern LIBMAP_API int geo_generator_get_brush_index_count(int entity_idx, int brush_idx);
+extern LIBMAP_API void geo_generator_get_brush_vertices(int entity_idx, int brush_idx, face_vertex *o_vertices, int *o_indices);
 
 #endif

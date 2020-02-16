@@ -8,7 +8,7 @@
 #include "brush.h"
 #include "face.h"
 
-LIBMAP_API bool map_parser_load(const char *map_file);
+extern LIBMAP_API bool map_parser_load(const char *map_file);
 
 void token(const char *buf);
 void newline();
