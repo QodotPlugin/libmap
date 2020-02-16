@@ -6,7 +6,7 @@ environment:
   SCONS_CACHE: "%HOME%\\scons_cache"
   matrix:
     - VS: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
-      PLATFORM: windows
+      LM_PLATFORM: windows
       TOOLS: yes
       TARGET: release
       ARCH: amd64
@@ -25,4 +25,4 @@ before_build:
   - scons --version
 
 build_script:
-  - scons platform=%PLATFORM% target=%TARGET% tools=%TOOLS% progress=no
+  - scons platform=%LM_PLATFORM% target=%TARGET% tools=%TOOLS% progress=no
