@@ -23,8 +23,11 @@ vec3 wind_face_center;
 vec3 wind_face_basis;
 vec3 wind_face_normal;
 
-int sort_vertices_by_winding(const vec3 *lhs, const vec3 *rhs)
+int sort_vertices_by_winding(const void *lhs_in, const void *rhs_in)
 {
+    const vec3 *lhs = (const vec3 *)lhs_in;
+    const vec3 *rhs = (const vec3 *)rhs_in;
+
     face *face_inst = &entities[wind_entity_idx].brushes[wind_brush_idx].faces[wind_face_idx];
     face_geometry *face_geo_inst = &entity_geo[wind_entity_idx].brushes[wind_brush_idx].faces[wind_face_idx];
 
