@@ -1,0 +1,10 @@
+language: c
+
+matrix:
+    include:
+        - os: windows
+
+        - os: linux
+
+        - os: osx
+          osx_image: xcode8
