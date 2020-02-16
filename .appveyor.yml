@@ -21,7 +21,6 @@ install:
 
 before_build:
   - mkdir build
-  - mkdir install
 
 build_script:
   - scons platform=%LM_PLATFORM% bits=64 target=%TARGET%
