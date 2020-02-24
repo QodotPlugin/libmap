@@ -3,3 +3,5 @@ build.bat
 
 build/
 install/
+
+.DS_Store
