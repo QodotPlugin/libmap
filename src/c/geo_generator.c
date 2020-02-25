@@ -210,10 +210,10 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
         {
             for (int f2 = 0; f2 < brush_inst->face_count; ++f2)
             {
-                vec3 *vertex = malloc(sizeof(vec3));
-                if (intersect_faces(brush_inst->faces[f0], brush_inst->faces[f1], brush_inst->faces[f2], vertex))
+                vec3 vertex = (vec3){0};
+                if (intersect_faces(brush_inst->faces[f0], brush_inst->faces[f1], brush_inst->faces[f2], &vertex))
                 {
-                    if (vertex_in_hull(brush_inst->faces, brush_inst->face_count, *vertex))
+                    if (vertex_in_hull(brush_inst->faces, brush_inst->face_count, vertex))
                     {
                         face *face_inst = &entities[entity_idx].brushes[brush_idx].faces[f0];
                         face_geometry *face_geo_inst = &entity_geo[entity_idx].brushes[brush_idx].faces[f0];
@@ -223,7 +223,7 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                         for (int v = 0; v < face_geo_inst->vertex_count; ++v)
                         {
                             vec3 comp_vertex = face_geo_inst->vertices[v].vertex;
-                            if (vec3_length(vec3_sub(*vertex, comp_vertex)) < CMP_EPSILON)
+                            if (vec3_length(vec3_sub(vertex, comp_vertex)) < CMP_EPSILON)
                             {
                                 unique_vertex = false;
                                 break;
@@ -257,11 +257,11 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                             vertex_uv uv;
                             if (face_inst->is_valve_uv)
                             {
-                                uv = get_valve_uv(*vertex, face_inst, texture->width, texture->height);
+                                uv = get_valve_uv(vertex, face_inst, texture->width, texture->height);
                             }
                             else
                             {
-                                uv = get_standard_uv(*vertex, face_inst, texture->width, texture->height);
+                                uv = get_standard_uv(vertex, face_inst, texture->width, texture->height);
                             }
 
                             vertex_tangent tangent;
@@ -274,11 +274,10 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                                 tangent = get_standard_tangent(face_inst);
                             }
 
-                            face_geo_inst->vertices[face_geo_inst->vertex_count - 1] = (face_vertex){*vertex, normal, uv, tangent};
+                            face_geo_inst->vertices[face_geo_inst->vertex_count - 1] = (face_vertex){vertex, normal, uv, tangent};
                         }
                     }
                 }
-                free(vertex);
             }
         }
     }
