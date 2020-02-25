@@ -11,7 +11,6 @@
 #include "entity.h"
 
 enum surface_split_type split_type = SST_NONE;
-uint8_t spawn_type_mask = EST_WORLDSPAWN | EST_MERGE_WORLDSPAWN | EST_ENTITY;
 int entity_filter_idx = -1;
 int texture_filter_idx = -1;
 int brush_filter_texture_idx;
@@ -22,11 +21,6 @@ surfaces out_surfaces;
 void surface_gatherer_set_split_type(enum surface_split_type new_split_type)
 {
     split_type = new_split_type;
-}
-
-void surface_gatherer_set_spawn_type_mask(uint8_t new_spawn_type_mask)
-{
-    spawn_type_mask = new_spawn_type_mask;
 }
 
 void surface_gatherer_set_entity_index_filter(int entity_idx)
@@ -207,7 +201,7 @@ void surface_gatherer_run()
                 {
                     face_vertex vertex = face_geo_inst->vertices[v];
 
-                    if(entity_inst->spawn_type == EST_ENTITY)
+                    if(entity_inst->spawn_type == EST_ENTITY || entity_inst->spawn_type == EST_GROUP)
                     {
                         vertex.vertex = vec3_sub(vertex.vertex, entity_inst->center);
                     }

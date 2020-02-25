@@ -14,7 +14,8 @@ enum entity_spawn_type
 {
     EST_WORLDSPAWN = 0,
     EST_MERGE_WORLDSPAWN = 1,
-    EST_ENTITY = 2
+    EST_ENTITY = 2,
+    EST_GROUP = 3
 };
 
 typedef struct entity {
