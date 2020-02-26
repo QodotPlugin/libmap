@@ -33,18 +33,18 @@ typedef enum parse_scope
     PS_V_SCALE,
 } parse_scope;
 
-parse_scope scope = PS_FILE;
-bool comment = false;
-int entity_idx = -1;
-int brush_idx = -1;
-int face_idx = -1;
-int component_idx = 0;
-char *current_property;
-bool valve_uvs = false;
+static parse_scope scope = PS_FILE;
+static bool comment = false;
+static int entity_idx = -1;
+static int brush_idx = -1;
+static int face_idx = -1;
+static int component_idx = 0;
+static char *current_property;
+static bool valve_uvs = false;
 
-face current_face;
-brush current_brush;
-entity current_entity;
+static face current_face = (face){0};
+static brush current_brush = (brush){0};
+static entity current_entity = (entity){0};
 
 void reset_current_face()
 {
