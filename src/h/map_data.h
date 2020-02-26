@@ -12,6 +12,12 @@ typedef struct texture_data
     int height;
 } texture_data;
 
+typedef struct worldspawn_layer
+{
+    int texture_idx;
+    bool build_visuals;
+} worldspawn_layer;
+
 int entity_count;
 entity *entities;
 entity_geometry *entity_geo;
@@ -19,7 +25,13 @@ entity_geometry *entity_geo;
 int texture_count;
 texture_data *textures;
 
+int worldspawn_layer_count;
+worldspawn_layer *worldspawn_layers;
+
 void map_data_reset();
+
+extern LIBMAP_API void map_data_register_worldspawn_layer(const char *name, bool build_visuals);
+extern LIBMAP_API int map_data_find_worldspawn_layer(int texture_idx);
 
 int map_data_register_texture(const char *name);
 extern LIBMAP_API void map_data_set_texture_size(const char *name, int width, int height);

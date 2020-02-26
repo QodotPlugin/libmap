@@ -102,6 +102,38 @@ void map_data_reset()
     }
 
     texture_count = 0;
+
+    if (worldspawn_layers != NULL)
+    {
+        free(worldspawn_layers);
+        worldspawn_layers = NULL;
+    }
+
+    worldspawn_layer_count = 0;
+}
+
+void map_data_register_worldspawn_layer(const char *name, bool build_visuals)
+{
+    worldspawn_layers = realloc(worldspawn_layers, (worldspawn_layer_count + 1) * sizeof(worldspawn_layer));
+    worldspawn_layer *layer = &worldspawn_layers[worldspawn_layer_count];
+    *layer = (worldspawn_layer){0};
+    layer->texture_idx = map_data_find_texture(name);
+    layer->build_visuals = build_visuals;
+    worldspawn_layer_count++;
+}
+
+int map_data_find_worldspawn_layer(int texture_idx)
+{
+    for (int l = 0; l < worldspawn_layer_count; ++l)
+    {
+        worldspawn_layer *layer = &worldspawn_layers[l];
+        if (layer->texture_idx == texture_idx)
+        {
+            return l;
+        }
+    }
+
+    return -1;
 }
 
 int map_data_register_texture(const char *name)
