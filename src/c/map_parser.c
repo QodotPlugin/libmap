@@ -42,9 +42,9 @@ static int component_idx = 0;
 static char *current_property;
 static bool valve_uvs = false;
 
-static face current_face = (face){0};
-static brush current_brush = (brush){0};
-static entity current_entity = (entity){0};
+static face current_face;
+static brush current_brush;
+static entity current_entity;
 
 void reset_current_face()
 {
