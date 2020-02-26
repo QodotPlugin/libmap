@@ -32,6 +32,8 @@ void map_data_reset();
 
 extern LIBMAP_API void map_data_register_worldspawn_layer(const char *name, bool build_visuals);
 extern LIBMAP_API int map_data_find_worldspawn_layer(int texture_idx);
+extern LIBMAP_API int map_data_get_worldspawn_layer_count();
+extern LIBMAP_API worldspawn_layer *map_data_get_worldspawn_layers();
 
 int map_data_register_texture(const char *name);
 extern LIBMAP_API void map_data_set_texture_size(const char *name, int width, int height);
@@ -39,7 +41,7 @@ extern LIBMAP_API void map_data_set_texture_size(const char *name, int width, in
 extern LIBMAP_API int map_data_get_texture_count();
 extern LIBMAP_API texture_data *map_data_get_textures();
 int map_data_find_texture(const char *texture_name);
-texture_data *map_data_get_texture(int texture_idx);
+extern LIBMAP_API texture_data *map_data_get_texture(int texture_idx);
 
 extern LIBMAP_API void map_data_set_spawn_type_by_classname(const char *key, int spawn_type);
 

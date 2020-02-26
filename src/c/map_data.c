@@ -136,6 +136,16 @@ int map_data_find_worldspawn_layer(int texture_idx)
     return -1;
 }
 
+int map_data_get_worldspawn_layer_count()
+{
+    return worldspawn_layer_count;
+}
+
+worldspawn_layer *map_data_get_worldspawn_layers()
+{
+    return worldspawn_layers;
+}
+
 int map_data_register_texture(const char *name)
 {
     if (textures != NULL)
