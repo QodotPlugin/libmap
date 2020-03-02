@@ -240,12 +240,28 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                             const char *phong_property = map_data_get_entity_property(entity_idx, "_phong");
                             if(phong_property != NULL && strcmp(phong_property, "1") == 0)
                             {
-                                normal = vec3_normalize(
-                                    vec3_add(
-                                        brush_inst->faces[f0].plane_normal,
+                                const char *phong_angle_property = map_data_get_entity_property(entity_idx, "_phong_angle");
+                                if(phong_angle_property != NULL)
+                                {
+                                    float threshold = cosf((atof(phong_angle_property) + 0.01) * 0.0174533);
+                                    normal = brush_inst->faces[f0].plane_normal;
+                                    if(vec3_dot(brush_inst->faces[f0].plane_normal, brush_inst->faces[f1].plane_normal) > threshold) {
+                                        normal = vec3_add(normal, brush_inst->faces[f1].plane_normal);
+                                    }
+                                    if(vec3_dot(brush_inst->faces[f0].plane_normal, brush_inst->faces[f2].plane_normal) > threshold) {
+                                        normal = vec3_add(normal, brush_inst->faces[f2].plane_normal);
+                                    }
+                                    normal = vec3_normalize(normal);
+                                }
+                                else
+                                {
+                                    normal = vec3_normalize(
                                         vec3_add(
-                                            brush_inst->faces[f1].plane_normal,
-                                            brush_inst->faces[f2].plane_normal)));
+                                            brush_inst->faces[f0].plane_normal,
+                                            vec3_add(
+                                                brush_inst->faces[f1].plane_normal,
+                                                brush_inst->faces[f2].plane_normal)));
+                                }
                             }
                             else
                             {
