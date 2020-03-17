@@ -243,7 +243,7 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                                 const char *phong_angle_property = map_data_get_entity_property(entity_idx, "_phong_angle");
                                 if(phong_angle_property != NULL)
                                 {
-                                    float threshold = cosf((atof(phong_angle_property) + 0.01) * 0.0174533);
+                                    double threshold = cos((atof(phong_angle_property) + 0.01) * 0.0174533);
                                     normal = brush_inst->faces[f0].plane_normal;
                                     if(vec3_dot(brush_inst->faces[f0].plane_normal, brush_inst->faces[f1].plane_normal) > threshold) {
                                         normal = vec3_add(normal, brush_inst->faces[f1].plane_normal);
