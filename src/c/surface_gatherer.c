@@ -15,6 +15,7 @@ int entity_filter_idx = -1;
 int texture_filter_idx = -1;
 int brush_filter_texture_idx;
 int face_filter_texture_idx;
+bool filter_worldspawn_layers;
 
 surfaces out_surfaces;
 
@@ -43,6 +44,11 @@ void surface_gatherer_set_face_filter_texture(const char *texture_name)
     face_filter_texture_idx = map_data_find_texture(texture_name);
 }
 
+void surface_gatherer_set_worldspawn_layer_filter(bool filter)
+{
+    filter_worldspawn_layers = filter;
+}
+
 bool surface_gatherer_filter_entity(int entity_idx)
 {
     const entity *ents = map_data_get_entities();
@@ -62,20 +68,6 @@ bool surface_gatherer_filter_brush(int entity_idx, int brush_idx)
     const entity *ents = map_data_get_entities();
     brush *brush_inst = &ents[entity_idx].brushes[brush_idx];
 
-    // Omit brushes that are part of a worldspawn layer
-    for (int f = 0; f < brush_inst->face_count; ++f)
-    {
-        face *face_inst = &brush_inst->faces[f];
-        for (int l = 0; l < worldspawn_layer_count; ++l)
-        {
-            worldspawn_layer *layer = &worldspawn_layers[l];
-            if (face_inst->texture_idx == layer->texture_idx)
-            {
-                return true;
-            }
-        }
-    }
-
     // Omit brushes that are fully-textured with clip
     if (brush_filter_texture_idx != -1)
     {
@@ -94,6 +86,25 @@ bool surface_gatherer_filter_brush(int entity_idx, int brush_idx)
         if(fully_textured)
         {
             return true;
+        }
+    }
+
+    // Omit brushes that are part of a worldspawn layer
+    for (int f = 0; f < brush_inst->face_count; ++f)
+    {
+        face *face_inst = &brush_inst->faces[f];
+        for (int l = 0; l < worldspawn_layer_count; ++l)
+        {
+            worldspawn_layer *layer = &worldspawn_layers[l];
+            if (face_inst->texture_idx == layer->texture_idx)
+            {
+                return filter_worldspawn_layers;
+            }
+            else
+            {
+                return !filter_worldspawn_layers;
+            }
+            
         }
     }
     
@@ -266,4 +277,5 @@ void surface_gatherer_reset_params()
     texture_filter_idx = -1;
     brush_filter_texture_idx = -1;
     face_filter_texture_idx = -1;
+    filter_worldspawn_layers = true;
 }

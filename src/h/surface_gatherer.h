@@ -30,6 +30,7 @@ extern LIBMAP_API void surface_gatherer_set_brush_filter_texture(const char *tex
 extern LIBMAP_API void surface_gatherer_set_face_filter_texture(const char *texture_name);
 extern LIBMAP_API void surface_gatherer_set_entity_index_filter(int entity_idx);
 extern LIBMAP_API void surface_gatherer_set_texture_filter(const char *texture_name);
+extern LIBMAP_API void surface_gatherer_set_worldspawn_layer_filter(bool filter);
 extern LIBMAP_API void surface_gatherer_run();
 extern LIBMAP_API const surfaces* surface_gatherer_fetch();
 
