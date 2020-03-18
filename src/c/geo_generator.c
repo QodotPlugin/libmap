@@ -91,13 +91,13 @@ void geo_generator_run()
     {
         entity *ent_inst = &entities[e];
         ent_inst->center = (vec3){0.0, 0.0, 0.0};
-        
+
         for (int b = 0; b < ent_inst->brush_count; ++b)
         {
             brush *brush_inst = &ent_inst->brushes[b];
             brush_inst->center = (vec3){0.0, 0.0, 0.0};
             int vert_count = 0;
-            
+
             generate_brush_vertices(e, b);
 
             brush_geometry *brush_geo_inst = &entity_geo[e].brushes[b];
@@ -112,7 +112,7 @@ void geo_generator_run()
                 }
             }
 
-            if(vert_count > 0)
+            if (vert_count > 0)
             {
                 brush_inst->center = vec3_div_double(brush_inst->center, vert_count);
             }
@@ -120,7 +120,7 @@ void geo_generator_run()
             ent_inst->center = vec3_add(ent_inst->center, brush_inst->center);
         }
 
-        if(ent_inst->brush_count > 0)
+        if (ent_inst->brush_count > 0)
         {
             ent_inst->center = vec3_div_double(ent_inst->center, ent_inst->brush_count);
         }
@@ -141,7 +141,7 @@ void geo_generator_run()
                 face *face_inst = &brush_inst->faces[f];
                 face_geometry *face_geo_inst = &brush_geo_inst->faces[f];
 
-                if(face_geo_inst->vertex_count < 3)
+                if (face_geo_inst->vertex_count < 3)
                 {
                     continue;
                 }
@@ -182,7 +182,7 @@ void geo_generator_run()
             {
                 face_geometry *face_geo_inst = &brush_geo_inst->faces[f];
 
-                if(face_geo_inst->vertex_count < 3)
+                if (face_geo_inst->vertex_count < 3)
                 {
                     continue;
                 }
@@ -218,7 +218,66 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                         face *face_inst = &entities[entity_idx].brushes[brush_idx].faces[f0];
                         face_geometry *face_geo_inst = &entity_geo[entity_idx].brushes[brush_idx].faces[f0];
 
+                        vec3 normal;
+
+                        const char *phong_property = map_data_get_entity_property(entity_idx, "_phong");
+                        bool phong = phong_property != NULL && strcmp(phong_property, "1") == 0;
+                        if (phong)
+                        {
+                            const char *phong_angle_property = map_data_get_entity_property(entity_idx, "_phong_angle");
+                            if (phong_angle_property != NULL)
+                            {
+                                double threshold = cos((atof(phong_angle_property) + 0.01) * 0.0174533);
+                                normal = brush_inst->faces[f0].plane_normal;
+                                if (vec3_dot(brush_inst->faces[f0].plane_normal, brush_inst->faces[f1].plane_normal) > threshold)
+                                {
+                                    normal = vec3_add(normal, brush_inst->faces[f1].plane_normal);
+                                }
+                                if (vec3_dot(brush_inst->faces[f0].plane_normal, brush_inst->faces[f2].plane_normal) > threshold)
+                                {
+                                    normal = vec3_add(normal, brush_inst->faces[f2].plane_normal);
+                                }
+                                normal = vec3_normalize(normal);
+                            }
+                            else
+                            {
+                                normal = vec3_normalize(
+                                    vec3_add(
+                                        brush_inst->faces[f0].plane_normal,
+                                        vec3_add(
+                                            brush_inst->faces[f1].plane_normal,
+                                            brush_inst->faces[f2].plane_normal)));
+                            }
+                        }
+                        else
+                        {
+                            normal = face_inst->plane_normal;
+                        }
+
+                        texture_data *texture = map_data_get_texture(face_inst->texture_idx);
+
+                        vertex_uv uv;
+                        if (face_inst->is_valve_uv)
+                        {
+                            uv = get_valve_uv(vertex, face_inst, texture->width, texture->height);
+                        }
+                        else
+                        {
+                            uv = get_standard_uv(vertex, face_inst, texture->width, texture->height);
+                        }
+
+                        vertex_tangent tangent;
+                        if (face_inst->is_valve_uv)
+                        {
+                            tangent = get_valve_tangent(face_inst);
+                        }
+                        else
+                        {
+                            tangent = get_standard_tangent(face_inst);
+                        }
+
                         bool unique_vertex = true;
+                        int duplicate_index = -1;
 
                         for (int v = 0; v < face_geo_inst->vertex_count; ++v)
                         {
@@ -226,6 +285,7 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                             if (vec3_length(vec3_sub(vertex, comp_vertex)) < CMP_EPSILON)
                             {
                                 unique_vertex = false;
+                                duplicate_index = v;
                                 break;
                             }
                         }
@@ -234,67 +294,26 @@ void generate_brush_vertices(int entity_idx, int brush_idx)
                         {
                             face_geo_inst->vertex_count++;
                             face_geo_inst->vertices = realloc(face_geo_inst->vertices, face_geo_inst->vertex_count * sizeof(face_vertex));
-
-                            vec3 normal;
-
-                            const char *phong_property = map_data_get_entity_property(entity_idx, "_phong");
-                            if(phong_property != NULL && strcmp(phong_property, "1") == 0)
-                            {
-                                const char *phong_angle_property = map_data_get_entity_property(entity_idx, "_phong_angle");
-                                if(phong_angle_property != NULL)
-                                {
-                                    double threshold = cos((atof(phong_angle_property) + 0.01) * 0.0174533);
-                                    normal = brush_inst->faces[f0].plane_normal;
-                                    if(vec3_dot(brush_inst->faces[f0].plane_normal, brush_inst->faces[f1].plane_normal) > threshold) {
-                                        normal = vec3_add(normal, brush_inst->faces[f1].plane_normal);
-                                    }
-                                    if(vec3_dot(brush_inst->faces[f0].plane_normal, brush_inst->faces[f2].plane_normal) > threshold) {
-                                        normal = vec3_add(normal, brush_inst->faces[f2].plane_normal);
-                                    }
-                                    normal = vec3_normalize(normal);
-                                }
-                                else
-                                {
-                                    normal = vec3_normalize(
-                                        vec3_add(
-                                            brush_inst->faces[f0].plane_normal,
-                                            vec3_add(
-                                                brush_inst->faces[f1].plane_normal,
-                                                brush_inst->faces[f2].plane_normal)));
-                                }
-                            }
-                            else
-                            {
-                                normal = face_inst->plane_normal;
-                            }
-
-                            texture_data *texture = map_data_get_texture(face_inst->texture_idx);
-
-                            vertex_uv uv;
-                            if (face_inst->is_valve_uv)
-                            {
-                                uv = get_valve_uv(vertex, face_inst, texture->width, texture->height);
-                            }
-                            else
-                            {
-                                uv = get_standard_uv(vertex, face_inst, texture->width, texture->height);
-                            }
-
-                            vertex_tangent tangent;
-                            if (face_inst->is_valve_uv)
-                            {
-                                tangent = get_valve_tangent(face_inst);
-                            }
-                            else
-                            {
-                                tangent = get_standard_tangent(face_inst);
-                            }
-
                             face_geo_inst->vertices[face_geo_inst->vertex_count - 1] = (face_vertex){vertex, normal, uv, tangent};
                         }
+                        else if(phong)
+                        {
+                            face_geo_inst->vertices[duplicate_index].normal = vec3_add(face_geo_inst->vertices[duplicate_index].normal, normal);
+                        }
+                        
                     }
                 }
             }
+        }
+    }
+
+    for (int f = 0; f < brush_inst->face_count; ++f)
+    {
+        face_geometry *face_geo_inst = &entity_geo[entity_idx].brushes[brush_idx].faces[f];
+
+        for (int v = 0; v < face_geo_inst->vertex_count; ++v)
+        {
+            face_geo_inst->vertices[v].normal = vec3_normalize(face_geo_inst->vertices[v].normal);
         }
     }
 }
@@ -349,7 +368,7 @@ bool vertex_in_hull(face *faces, int face_count, vec3 vertex)
     return true;
 }
 
-vertex_uv get_standard_uv(vec3 vertex, const face* face, int texture_width, int texture_height)
+vertex_uv get_standard_uv(vec3 vertex, const face *face, int texture_width, int texture_height)
 {
     vertex_uv uv_out;
 
@@ -388,14 +407,14 @@ vertex_uv get_standard_uv(vec3 vertex, const face* face, int texture_width, int 
     return uv_out;
 }
 
-vertex_uv get_valve_uv(vec3 vertex, const face* face, int texture_width, int texture_height)
+vertex_uv get_valve_uv(vec3 vertex, const face *face, int texture_width, int texture_height)
 {
     vertex_uv uv_out;
 
     vec3 u_axis = face->uv_valve.u.axis;
     double u_shift = face->uv_valve.u.offset;
     vec3 v_axis = face->uv_valve.v.axis;
-	double v_shift = face->uv_valve.v.offset;
+    double v_shift = face->uv_valve.v.offset;
 
     uv_out.u = vec3_dot(u_axis, vertex);
     uv_out.v = vec3_dot(v_axis, vertex);
@@ -414,11 +433,11 @@ vertex_uv get_valve_uv(vec3 vertex, const face* face, int texture_width, int tex
 
 double sign(double v)
 {
-    if(v > 0)
+    if (v > 0)
     {
         return 1.0;
     }
-    else if(v < 0)
+    else if (v < 0)
     {
         return -1.0;
     }
@@ -426,11 +445,11 @@ double sign(double v)
     return 0.0;
 }
 
-vertex_tangent get_standard_tangent(const face* face)
+vertex_tangent get_standard_tangent(const face *face)
 {
     vertex_tangent tangent_out;
 
-	double du = vec3_dot(face->plane_normal, UP_VECTOR);
+    double du = vec3_dot(face->plane_normal, UP_VECTOR);
     double dr = vec3_dot(face->plane_normal, RIGHT_VECTOR);
     double df = vec3_dot(face->plane_normal, FORWARD_VECTOR);
 
@@ -441,17 +460,17 @@ vertex_tangent get_standard_tangent(const face* face)
     vec3 u_axis;
     double v_sign = 0;
 
-    if(dua >= dra && dua >= dfa)
+    if (dua >= dra && dua >= dfa)
     {
-		u_axis = FORWARD_VECTOR;
+        u_axis = FORWARD_VECTOR;
         v_sign = sign(du);
     }
-	else if(dra >= dua && dra >= dfa)
+    else if (dra >= dua && dra >= dfa)
     {
         u_axis = FORWARD_VECTOR;
         v_sign = -sign(dr);
     }
-	else if(dfa >= dua && dfa >= dra)
+    else if (dfa >= dua && dfa >= dra)
     {
         u_axis = RIGHT_VECTOR;
         v_sign = sign(df);
@@ -468,14 +487,14 @@ vertex_tangent get_standard_tangent(const face* face)
     return tangent_out;
 }
 
-vertex_tangent get_valve_tangent(const face* face)
+vertex_tangent get_valve_tangent(const face *face)
 {
     vertex_tangent tangent_out;
 
     vec3 u_axis = vec3_normalize(face->uv_valve.u.axis);
     vec3 v_axis = vec3_normalize(face->uv_valve.v.axis);
 
-	double v_sign = -sign(vec3_dot(vec3_cross(face->plane_normal, u_axis), v_axis));
+    double v_sign = -sign(vec3_dot(vec3_cross(face->plane_normal, u_axis), v_axis));
 
     tangent_out.x = u_axis.x;
     tangent_out.y = u_axis.y;
