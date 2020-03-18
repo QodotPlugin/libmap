@@ -1,9 +1,6 @@
 language: c
 before_script:
-    - mkdir build
-before_deploy:
-    - export TRAVIS_TAG=latest
-    - git tag $TRAVIS_TAG
+    - mkdir "build/*.dll"
 matrix:
     include:
         - os: osx
@@ -28,6 +25,7 @@ deploy:
         - "build/*.so"
         - "build/*.dylib"
     on:
-        repo: Shfty/libmap
+        tags: true
     draft: true
     overwrite: true
+    name: $TRAVIS_TAG

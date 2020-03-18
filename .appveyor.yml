@@ -36,4 +36,6 @@ deploy:
     artifact: build/libmap.dll
     draft: true
     force_update: true
-    tag: latest
+    on:
+      APPVEYOR_REPO_TAG: true
+    tag: $(APPVEYOR_REPO_TAG_NAME)
