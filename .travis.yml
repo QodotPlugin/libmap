@@ -1,6 +1,6 @@
 language: c
 before_script:
-    - mkdir "build/*.dll"
+    - mkdir "build"
 matrix:
     include:
         - os: osx
