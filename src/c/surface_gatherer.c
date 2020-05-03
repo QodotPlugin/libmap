@@ -100,10 +100,6 @@ bool surface_gatherer_filter_brush(int entity_idx, int brush_idx)
             {
                 return filter_worldspawn_layers;
             }
-            else
-            {
-                return !filter_worldspawn_layers;
-            }
             
         }
     }
