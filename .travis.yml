@@ -5,8 +5,11 @@ matrix:
     include:
         - os: osx
           osx_image: xcode12.5
-          before_install: easy_install scons
           script: scons platform=osx bits=64 target=release fat_binary=yes
+          addons:
+            homebrew:
+                packages:
+                    - scons
         - os: linux
           script: scons platform=linux bits=64 target=release
           addons:
