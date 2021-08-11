@@ -372,21 +372,27 @@ vertex_uv get_standard_uv(vec3 vertex, const face *face, int texture_width, int 
 {
     vertex_uv uv_out;
 
+    // Z unit
     double du = fabs(vec3_dot(face->plane_normal, UP_VECTOR));
+    // Y unit
     double dr = fabs(vec3_dot(face->plane_normal, RIGHT_VECTOR));
+    // X unit
     double df = fabs(vec3_dot(face->plane_normal, FORWARD_VECTOR));
 
-    if (du >= dr && du >= df)
+    if (df >= du && df >= dr)
     {
-        uv_out = (vertex_uv){vertex.x, -vertex.y};
+        // X plane.
+        uv_out = (vertex_uv){vertex.y, -vertex.z};
     }
     else if (dr >= du && dr >= df)
     {
+        // Y plane.
         uv_out = (vertex_uv){vertex.x, -vertex.z};
     }
-    else if (df >= du && df >= dr)
+    else
     {
-        uv_out = (vertex_uv){vertex.y, -vertex.z};
+        // Z wins by default.
+        uv_out = (vertex_uv){vertex.x, -vertex.y};
     }
 
     vertex_uv rotated;
