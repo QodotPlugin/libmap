@@ -11,6 +11,9 @@
 #include "entity.h"
 #include "map_data.h"
 
+#define BUFFER_BLOCK_SIZE 1024
+#define BUFFER_MAX_SIZE 1024 * BUFFER_BLOCK_SIZE 
+
 #define DEBUG false
 
 typedef enum parse_scope
@@ -128,8 +131,10 @@ bool map_parser_load(const char *map_file)
     }
 
     int c;
-    char buf[255];
+    int buf_size = BUFFER_BLOCK_SIZE * sizeof(char);
+    char *buf = (char *) malloc(buf_size);
     int buf_head = 0;
+    bool parse_error = false;
     while ((c = fgetc(map)) != EOF)
     {
         if (c == '\n')
@@ -150,9 +155,29 @@ bool map_parser_load(const char *map_file)
         {
             buf[buf_head++] = c;
         }
+
+        if (buf_head == BUFFER_MAX_SIZE)
+        {
+            printf("Error: Map parser reached to the max size of its buffer.\n");
+            parse_error = true;
+            break;
+        }
+
+        if (buf_head == buf_size)
+        {
+            buf_size += BUFFER_BLOCK_SIZE;
+            buf = (char *) realloc(buf, buf_size);
+        }
     }
 
+    free(buf);
+
     fclose(map);
+
+    if (parse_error)
+    {
+        return false;
+    }
 
     return true;
 }
